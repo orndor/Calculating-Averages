@@ -73,19 +73,19 @@ namespace Calculating_Averages
         }
         static void LetterGrade(int average)
         {
-            if (average > 89)
+            if (average >= 90)
             {
                 Console.WriteLine($"The letter grade average is: A");
             }
-            else if (average > 79 && average < 90)
+            else if (average >= 80 && average < 90)
             {
                 Console.WriteLine($"The letter grade average is: B");
             }
-            else if (average > 69 && average < 80)
+            else if (average >= 70 && average < 80)
             {
                 Console.WriteLine($"The letter grade average is: C");
             }
-            else if (average > 59 && average < 70)
+            else if (average >= 60 && average < 70)
             {
                 Console.WriteLine($"The letter grade average is: D");
             }
