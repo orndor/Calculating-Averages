@@ -1,11 +1,12 @@
 ﻿// File name: Program.cs
-// Project Name: Calculating Averages
+// Project Name: Calculating_Averages
 // Author: Orndoff, Robert K.
 // Date created: 07/15/2019
-// Date last modified: 07/15/2019
+// Date last modified: 07/16/2019
 //
 // C#
 using System;
+using System.Collections.Generic;
 
 namespace Calculating_Averages
 {
@@ -13,64 +14,42 @@ namespace Calculating_Averages
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("---===Begin Basic Difficulty===---");
-            int[] rawScores = Scores();
-            Console.WriteLine($"The score average is: {SumScores(rawScores) / 10}");
+            //Basic Difficulty
+            LetterGrade(AverageTenScores(SumTenScores()));
 
-            Console.WriteLine("---===Begin Intermediate Difficulty===---");
-            int[] advRawScores = AdvScores(new int[GetNumOfScores()]);
-            int advAverage = AdvSumScores(advRawScores) / advRawScores.Length; //Needed to store this result in a variable for reference in Advanced Difficulty code below.
-            Console.WriteLine($"The score average is: {advAverage}");
+            //Intermediate Difficulty
+            LetterGrade(AverageAnyNumberOfScores(SumAnyNumberOfScores()));
 
-            Console.WriteLine("---===Begin Advanced Difficulty===---");
-            LetterGrade(advAverage);
+            //Advanced Difficulty
+            LetterGrade(AverageArbitraryNumberOfScores(SumArbitraryNumberOfScores()));
+
         }
-        static int[] Scores()
+
+        static int SumTenScores()
         {
             int[] scores = new int[10];
             for (int i = 0; i < scores.Length; i++)
             {
-                Console.WriteLine($"Enter score number {i+1}:");
+                Console.WriteLine($"Enter score number {i + 1}:");
                 scores[i] = Convert.ToInt32(Console.ReadLine());
             }
-            return scores;
-        }
-        static int SumScores(int[] rawScores)
-        {
             int sum = 0;
-            foreach(int s in rawScores)
+            foreach (int s in scores)
             {
                 sum += s;
             }
             Console.WriteLine($"The sum of all scores is: {sum}");
+
             return sum;
         }
-        static int GetNumOfScores()
-        {
-            Console.WriteLine($"How many scores are there?");
-            int numScores = Convert.ToInt32(Console.ReadLine());
 
-            return numScores;
-        }
-        static int[] AdvScores(int[] advScores)
+        static int AverageTenScores(int sum)
         {
-            for (int i = 0; i < advScores.Length; i++)
-            {
-                Console.WriteLine($"Enter score number {i + 1}:");
-                advScores[i] = Convert.ToInt32(Console.ReadLine());
-            }
-            return advScores;
+            int average = sum / 10;
+            Console.WriteLine($"The average of the 10 scores is: {average}");
+            return average;
         }
-        static int AdvSumScores(int[] advRawScores)
-        {
-            int advSum = 0;
-            foreach (int s in advRawScores)
-            {
-                advSum += s;
-            }
-            Console.WriteLine($"The sum of all scores is: {advSum}");
-            return advSum;
-        }
+
         static void LetterGrade(int average)
         {
             if (average >= 90)
@@ -94,6 +73,62 @@ namespace Calculating_Averages
                 Console.WriteLine($"The letter grade average is: F");
             }
             return;
+        }
+
+        static Tuple<int, int[]> SumAnyNumberOfScores()
+        {
+            Console.WriteLine($"How many scores are there?");
+            int[] scores = new int[(Convert.ToInt32(Console.ReadLine()))];
+            for (int i = 0; i < scores.Length; i++)
+            {
+                Console.WriteLine($"Enter score number {i + 1}:");
+                scores[i] = Convert.ToInt32(Console.ReadLine());
+            }
+            int sum = 0;
+            foreach (int s in scores)
+            {
+                sum += s;
+            }
+            var scoreinfo = new Tuple<int, int[]>(sum, scores);
+            return scoreinfo;
+        }
+
+        static int AverageAnyNumberOfScores(Tuple<int, int[]> scoresinfo)
+        {
+            int average = scoresinfo.Item1 / scoresinfo.Item2.Length;
+            Console.WriteLine($"The average of the {scoresinfo.Item2.Length} score(s) is: {average}");
+
+            return average;
+        }
+
+        static Tuple<int, List<int>> SumArbitraryNumberOfScores()
+        {
+            List<int> scores = new List<int>();
+            string individualScore;
+            do
+            {
+                Console.WriteLine($"Enter a new score (hit enter to stop):");
+                individualScore = Console.ReadLine();
+                if (!string.IsNullOrEmpty(individualScore))
+                {
+                    scores.Add(Convert.ToInt32(individualScore));
+                }
+            } while (!string.IsNullOrEmpty(individualScore));
+            int sum = 0;
+            foreach (int s in scores)
+            {
+                sum += s;
+            }
+            var scoreinfo = new Tuple<int, List<int>>(sum, scores);
+            return scoreinfo;
+        }
+
+        static int AverageArbitraryNumberOfScores(Tuple<int, List<int>> scoreinfo)
+        {
+            int average = scoreinfo.Item1 / scoreinfo.Item2.Count;
+            Console.WriteLine($"The average of the {scoreinfo.Item2.Count} score(s) is: {average}");
+
+            return average;
         }
     }
 }
